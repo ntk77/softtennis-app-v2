@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ソフトテニス試合分析</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>ソフトテニス試合分析アプリ</h1>
+
+    <!-- ホーム画面 -->
+    <section id="home-screen">
+        <h1>ソフトテニス試合分析</h1>
+        <p>利用する機能を選択してください</p>
+
+        <div class="home-menu">
+            <button id="home-new-match-button">
+                新しい試合を記録する
+            </button>
+
+            <button id="home-resume-button" hidden>
+                記録中の試合を再開する
+            </button>
+
+            <button id="home-match-list-button">
+                過去の試合記録を見る
+            </button>
+
+            <button id="home-growth-button">
+                成長分析を見る
+            </button>
+
+            <button id="home-backup-button">
+                データ管理
+            </button>
+        </div>
+    </section>
+
+    <!-- 試合設定画面 -->
+    <section id="setup-screen" hidden>
+        <h2>試合設定</h2>
+
+        <label for="player-a">後衛</label>
+        <input type="text" id="player-a" placeholder="選手名を入力">
+
+        <label for="player-b">前衛</label>
+        <input type="text" id="player-b" placeholder="選手名を入力">
+
+        <button id="start-button">試合開始</button>
+    </section>
+
+    <!-- ポイント記録画面 -->
+    <section id="record-screen" hidden>
+        <h2>ポイント記録</h2>
+        <p id="pair-name"></p>
+
+        <div class="score-board">
+            <div>
+                <p>自ペア</p>
+                <p>ゲーム：<span id="own-games">0</span></p>
+                <p>ポイント：<span id="own-score">0</span></p>
+            </div>
+
+            <div>
+                <p>相手ペア</p>
+                <p>ゲーム：<span id="opponent-games">0</span></p>
+                <p>ポイント：<span id="opponent-score">0</span></p>
+            </div>
+        </div>
+
+        <p id="game-number">第1ゲーム</p>
+
+        <div class="serve-input">
+            <h3>サーブ記録</h3>
+
+            <label>サーバー</label>
+
+            <div class="serve-choice" id="server-buttons">
+                <button type="button" data-value="A">後衛</button>
+                <button type="button" data-value="B">前衛</button>
+                <button type="button" data-value="opponent">相手</button>
+            </div>
+
+            <select id="server" hidden>
+                <option value="A">選手A</option>
+                <option value="B">選手B</option>
+                <option value="opponent">相手ペア</option>
+            </select>
+
+            <label>1stサーブ</label>
+
+            <div class="serve-choice" id="first-serve-buttons">
+                <button type="button" data-value="in">IN</button>
+                <button type="button" data-value="out">FAULT</button>
+                <button type="button" data-value="unknown">不明</button>
+            </div>
+
+            <select id="first-serve" hidden>
+                <option value="unknown">不明・未入力</option>
+                <option value="in">成功</option>
+                <option value="out">失敗</option>
+            </select>
+
+            <div id="second-serve-area" hidden>
+                <label>2ndサーブ</label>
+
+                <div class="serve-choice" id="second-serve-buttons">
+                    <button type="button" data-value="in">IN</button>
+                    <button type="button" data-value="out">FAULT</button>
+                    <button type="button" data-value="unknown">不明</button>
+                </div>
+
+                <select id="second-serve" hidden>
+                    <option value="unknown">不明・未入力</option>
+                    <option value="in">成功</option>
+                    <option value="out">失敗</option>
+                </select>
+            </div>
+        </div>
+
+
+        <!-- ポイント詳細記録 -->
+        <div class="error-input">
+            <label>
+                <input type="checkbox" id="record-error">
+                ポイントの詳細を記録する
+            </label>
+
+            <div id="error-details" hidden>
+
+                <label for="error-player">プレーした選手</label>
+                <div class="detail-choice" id="error-player-buttons" role="group" aria-label="error-player">
+<button type="button" data-value="A">後衛</button>
+<button type="button" data-value="B">前衛</button>
+</div>
+<select id="error-player" hidden>
+                    <option value="A">選手A</option>
+                    <option value="B">選手B</option>
+                </select>
+
+                <label for="shot">ショットの種類</label>
+                <div class="detail-choice" id="shot-buttons" role="group" aria-label="shot">
+<button type="button" data-value="receive">レシーブ</button>
+<button type="button" data-value="stroke">ストローク</button>
+<button type="button" data-value="volley">ボレー</button>
+<button type="button" data-value="smash">スマッシュ</button>
+</div>
+<select id="shot" hidden>
+                    <option value="receive">レシーブ</option>
+                    <option value="stroke">ストローク</option>
+                    <option value="volley">ボレー</option>
+                    <option value="smash">スマッシュ</option>
+                </select>
+
+                <div id="hand-area">
+                    <label for="hand">フォア・バック</label>
+                    <div class="detail-choice" id="hand-buttons" role="group" aria-label="hand">
+<button type="button" data-value="fore">フォア</button>
+<button type="button" data-value="back">バック</button>
+</div>
+<select id="hand" hidden>
+                        <option value="fore">フォア</option>
+                        <option value="back">バック</option>
+                    </select>
+                </div>
+
+                <label for="error-type">ポイントの結果</label>
+                <div class="detail-choice" id="error-type-buttons" role="group" aria-label="error-type">
+<button type="button" data-value="net">ネット</button>
+<button type="button" data-value="side">サイドアウト</button>
+<button type="button" data-value="back">バックアウト</button>
+<button type="button" data-value="ace">エース</button>
+</div>
+<select id="error-type" hidden>
+                    <option value="net">ネット</option>
+                    <option value="side">サイドアウト</option>
+                    <option value="back">バックアウト</option>
+                    <option value="ace">エース</option>
+                </select>
+
+            </div>
+        </div>
+
+
+        <div class="point-actions">
+<button id="own-point-button" type="button"><span class="point-team">自ペア</span><span class="point-add">＋ 1ポイント</span></button>
+<button id="opponent-point-button" type="button"><span class="point-team">相手ペア</span><span class="point-add">＋ 1ポイント</span></button>
+</div>
+        <button id="undo-button">1ポイント取り消す</button>
+        <button id="analysis-button">分析結果を見る</button>
+        <button id="match-list-button" hidden>過去の試合を見る</button>
+        <button id="growth-button" hidden>成長分析を見る</button>
+        <button id="backup-button" hidden>データ管理</button>
+        <button id="finish-button">試合終了</button>
+        <button id="new-match-button" hidden>新しい試合を始める</button>
+    </section>
+
+    <!-- 分析画面 -->
+    <section id="analysis-screen" hidden>
+        <h2>試合分析</h2>
+
+        <h3>サーブ成功率</h3>
+        <div id="serve-analysis"></div>
+
+        <h3>選手別エース数・ミス数</h3>
+        <div id="error-analysis"></div>
+        <h3>選手別ミス数のグラフ</h3>
+        <div id="error-chart"></div>
+
+
+        <h3>ミスの種類別集計</h3>
+        <div id="error-type-analysis"></div>
+
+        <button id="back-button">記録画面に戻る</button>
+    </section>
+
+    <section id="match-list-screen" hidden>
+        <h2>過去の試合一覧</h2>
+
+        <div id="match-list"></div>
+
+        <button id="list-back-button">
+            記録画面に戻る
+        </button>
+    </section>
+
+    <section id="growth-screen" hidden>
+        <h2>選手別の成長分析</h2>
+
+        <label for="growth-player">分析する選手</label>
+        <select id="growth-player"></select>
+
+        <div id="growth-results"></div>
+
+        <h3>1stサーブ成功率の推移</h3>
+        <div id="growth-chart"></div>
+
+        <button id="growth-back-button">
+            記録画面に戻る
+        </button>
+    </section>
+
+    <section id="point-history-screen" hidden>
+        <h2>ポイント履歴</h2>
+
+        <p id="history-match-name"></p>
+
+        <div id="point-history-list"></div>
+
+        <button id="history-back-button">
+            試合一覧に戻る
+        </button>
+    </section>
+
+
+    <section id="point-edit-screen" hidden>
+        <h2>ポイント記録の編集</h2>
+        <p id="point-edit-title"></p>
+
+        <label for="edit-winner">得点側</label>
+        <select id="edit-winner">
+            <option value="own">自分たち</option>
+            <option value="opponent">相手</option>
+        </select>
+
+        <label for="edit-server">サーバー</label>
+        <select id="edit-server">
+            <option value="A">選手A</option>
+            <option value="B">選手B</option>
+            <option value="opponent">相手</option>
+        </select>
+
+        <label for="edit-first-serve">1stサーブ</label>
+        <select id="edit-first-serve">
+            <option value="unknown">不明</option>
+            <option value="in">IN</option>
+            <option value="out">OUT</option>
+        </select>
+
+        <div id="edit-second-serve-area">
+            <label for="edit-second-serve">2ndサーブ</label>
+            <select id="edit-second-serve">
+                <option value="unknown">不明</option>
+                <option value="in">IN</option>
+                <option value="out">OUT</option>
+            </select>
+        </div>
+
+        <div id="edit-error-area">
+            <label for="edit-error-player">プレーした選手</label>
+            <select id="edit-error-player">
+                <option value="">記録なし</option>
+                <option value="A">選手A</option>
+                <option value="B">選手B</option>
+            </select>
+
+            <div id="edit-error-details">
+                <label for="edit-shot">ショット</label>
+                <select id="edit-shot">
+                    <option value="">不明</option>
+                    <option value="receive">レシーブ</option>
+                    <option value="stroke">ストローク</option>
+                    <option value="volley">ボレー</option>
+                    <option value="smash">スマッシュ</option>
+                </select>
+
+                <div id="edit-hand-area">
+                    <label for="edit-hand">フォア・バック</label>
+                    <select id="edit-hand">
+                        <option value="">不明</option>
+                        <option value="fore">フォア</option>
+                        <option value="back">バック</option>
+                    </select>
+                </div>
+
+                <label for="edit-error-type">ポイントの結果</label>
+                <select id="edit-error-type">
+                    <option value="">不明</option>
+                    <option value="net">ネット</option>
+                    <option value="side">サイドアウト</option>
+                    <option value="back">バックアウト</option>
+                    <option value="ace">エース</option>
+                </select>
+
+            </div>
+        </div>
+
+        <button id="save-point-edit-button">変更を保存</button>
+        <button id="cancel-point-edit-button">キャンセル</button>
+    </section>
+
+    <section id="backup-screen" hidden>
+        <h2>データ管理</h2>
+
+        <p>保存済みの試合データをバックアップできます。</p>
+
+        <button id="export-button">
+            バックアップを保存
+        </button>
+
+        <h3>バックアップから復元</h3>
+
+        <p>
+            注意：復元すると、現在保存されている
+            すべての試合データが置き換わります。
+        </p>
+
+        <input type="file" id="import-file" accept=".json,application/json">
+
+        <button id="import-button">
+            ファイルから復元
+        </button>
+
+        <button id="backup-back-button">
+            記録画面に戻る
+        </button>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
